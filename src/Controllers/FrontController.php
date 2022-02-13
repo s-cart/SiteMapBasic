@@ -16,8 +16,6 @@ use Cache;
 class FrontController extends RootFrontController
 {
     public $plugin;
-    public $contens;
-    public $cmsCategories;
     public $pages;
     public $blogs;
     public $products;
@@ -28,8 +26,6 @@ class FrontController extends RootFrontController
     {
         parent::__construct();
         $this->plugin = new AppConfig;
-        $this->contens = (new CmsContent)->where('status', 1)->get();
-        $this->cmsCategories = (new CmsCategory)->where('status', 1)->get();
         $this->pages = (new ShopPage)->where('status', 1)->get();
         $this->blogs = (new ShopNews)->where('status', 1)->get();
         $this->products = (new ShopProduct)->where('status', 1)->get();
@@ -138,21 +134,25 @@ class FrontController extends RootFrontController
           <changefreq>weekly</changefreq>
         </url>';
       }
-      foreach ($this->contens as $key => $item) {
-        $xml .= '<url>
-        <loc>' . $item->getUrl($lang) . '</loc>
-        <lastmod>' . $this->time . '</lastmod>
-        <priority>0.64</priority>
-        <changefreq>weekly</changefreq>
-        </url>';
-      }
-      foreach ($this->cmsCategories as $key => $cmsCategory) {
-        $xml .= '<url>
-        <loc>' . $cmsCategory->getUrl($lang) . '</loc>
-        <lastmod>' . $this->time . '</lastmod>
-        <priority>0.64</priority>
-        <changefreq>weekly</changefreq>
-        </url>';
+      if (sc_config('Content')) {
+        $contents = (new \App\Plugins\Cms\Content\Models\CmsContent)->where('status', 1)->get();
+        $cmsCategory = (new \App\Plugins\Cms\Content\Models\CmsCategory)->where('status', 1)->get();
+        foreach ($contents as $key => $item) {
+          $xml .= '<url>
+          <loc>' . $item->getUrl($lang) . '</loc>
+          <lastmod>' . $this->time . '</lastmod>
+          <priority>0.64</priority>
+          <changefreq>weekly</changefreq>
+          </url>';
+        }
+        foreach ($cmsCategory as $key => $cmsCategory) {
+          $xml .= '<url>
+          <loc>' . $cmsCategory->getUrl($lang) . '</loc>
+          <lastmod>' . $this->time . '</lastmod>
+          <priority>0.64</priority>
+          <changefreq>weekly</changefreq>
+          </url>';
+        }
       }
       foreach ($this->blogs as $key => $blog) {
         $xml .= '<url>
