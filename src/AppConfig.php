@@ -127,7 +127,7 @@ class AppConfig extends ConfigDefault
     public function config()
     {
         //redirect to url config of plugin
-        return;
+        return redirect()->route('SiteMapBasic.index');
     }
 
     public function getData()
