@@ -1,3 +1,9 @@
+========= History =========
+
+Version 1.x support S-Cart 6.x
+Version 2.x support S-Cart 7.x
+
+
 Link sitemap: http://your-domain/sitemap-basic/sitemap.xml
 
 Cache: 600s
